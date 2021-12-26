@@ -1,6 +1,6 @@
 async function main() {
   try {
-    const userId = getUserId;
+    const userId = getUserId();
     const userInfo = await fetchUserInfo(userId);
     const view = createView(userInfo);
     displayView(view);
@@ -10,22 +10,23 @@ async function main() {
 }
 
 function fetchUserInfo(userId) {
-  fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`).then(
-    (response) => {
-      if (!response.ok) {
-        return Promise.reject(
-          new Error(`${response.status}: ${response.statusText}`)
-        );
-      } else {
-        return response.json();
-      }
+  return fetch(
+    `https://api.github.com/users/${encodeURIComponent(userId)}`
+  ).then((response) => {
+    if (!response.ok) {
+      return Promise.reject(
+        new Error(`${response.status}: ${response.statusText}`)
+      );
+    } else {
+      return response.json();
     }
-  );
+  });
 }
 
 function getUserId() {
   return document.getElementById("userId").value;
 }
+
 function createView(userInfo) {
   return escapeHTML`
     <h4>${userInfo.name} (@${userInfo.login})</h4>
@@ -52,6 +53,7 @@ function escapeSpecialChars(str) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
 function escapeHTML(strings, ...values) {
   return strings.reduce((result, str, i) => {
     const value = values[i - 1];
