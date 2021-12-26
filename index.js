@@ -26,18 +26,17 @@ function fetchUserInfo(userId) {
 function getUserId() {
   return document.getElementById("userId").value;
 }
-
 function createView(userInfo) {
   return escapeHTML`
-    <h4>${userInfo.name} (@${userInfo.login})</h4>
-    <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
-    <dl>
-        <dt>Location</dt>
-        <dd>${userInfo.location}</dd>
-        <dt>Repositories</dt>
-        <dd>${userInfo.public_repos}</dd>
-    </dl>
-    `;
+      <h4>${userInfo.name} (@${userInfo.login})</h4>
+      <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
+      <dl>
+          <dt>Location</dt>
+          <dd>${userInfo.location}</dd>
+          <dt>Repositories</dt>
+          <dd>${userInfo.public_repos}</dd>
+      </dl>
+      `;
 }
 
 function displayView(view) {
@@ -53,7 +52,6 @@ function escapeSpecialChars(str) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
-
 function escapeHTML(strings, ...values) {
   return strings.reduce((result, str, i) => {
     const value = values[i - 1];
