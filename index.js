@@ -1,6 +1,6 @@
 async function main() {
   try {
-    const userId = getUserId;
+    const userId = getUserId();
     const userInfo = await fetchUserInfo(userId);
     const view = createView(userInfo);
     displayView(view);
@@ -10,17 +10,17 @@ async function main() {
 }
 
 function fetchUserInfo(userId) {
-  fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`).then(
-    (response) => {
-      if (!response.ok) {
-        return Promise.reject(
-          new Error(`${response.status}: ${response.statusText}`)
-        );
-      } else {
-        return response.json();
-      }
+  return fetch(
+    `https://api.github.com/users/${encodeURIComponent(userId)}`
+  ).then((response) => {
+    if (!response.ok) {
+      return Promise.reject(
+        new Error(`${response.status}: ${response.statusText}`)
+      );
+    } else {
+      return response.json();
     }
-  );
+  });
 }
 
 function getUserId() {
@@ -28,15 +28,15 @@ function getUserId() {
 }
 function createView(userInfo) {
   return escapeHTML`
-    <h4>${userInfo.name} (@${userInfo.login})</h4>
-    <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
-    <dl>
-        <dt>Location</dt>
-        <dd>${userInfo.location}</dd>
-        <dt>Repositories</dt>
-        <dd>${userInfo.public_repos}</dd>
-    </dl>
-    `;
+      <h4>${userInfo.name} (@${userInfo.login})</h4>
+      <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
+      <dl>
+          <dt>Location</dt>
+          <dd>${userInfo.location}</dd>
+          <dt>Repositories</dt>
+          <dd>${userInfo.public_repos}</dd>
+      </dl>
+      `;
 }
 
 function displayView(view) {
